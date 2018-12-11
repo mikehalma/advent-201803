@@ -58,9 +58,17 @@ fun loadClaims(fileName :String) :List<String> {
 
 fun findIntactClaims(fileName: String): Set<Int> {
     val fabric = createFabric(fileName)
-    val singleUseSquares = fabric.squares.filter { it.value.size == 1}.values
-    val multiUseSquares = fabric.squares.filter { it.value.size > 1 }.values
-    val singleUseClaims = singleUseSquares.flatten().toSet()
-    val multiUseClaims = multiUseSquares.flatten().toSet()
+    val singleUseClaims =
+        fabric.squares
+            .filter { it.value.size == 1}
+            .values
+            .flatten()
+            .toSet()
+    val multiUseClaims =
+        fabric.squares
+            .filter { it.value.size > 1 }
+            .values
+            .flatten()
+            .toSet()
     return singleUseClaims.minus(multiUseClaims)
 }
