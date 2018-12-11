@@ -162,4 +162,14 @@ class OverlappingClaimsTest {
         assertEquals(104241, findOverlappingSquares("claims.txt").size)
     }
 
+    @Test
+    fun findIntactClaims_simple() {
+        assertEquals(setOf(3), findIntactClaims("simpleIntactClaim.txt"))
+    }
+
+    @Test
+    fun findIntactClaims() {
+        assertEquals(setOf(806), findIntactClaims("claims.txt"))
+    }
+
 }

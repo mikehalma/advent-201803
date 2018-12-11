@@ -55,3 +55,12 @@ fun findOverlappingSquares(fileName: String): Set<Square> {
 fun loadClaims(fileName :String) :List<String> {
     return File(object {}.javaClass.getResource(fileName).toURI()).readLines(Charset.defaultCharset())
 }
+
+fun findIntactClaims(fileName: String): Set<Int> {
+    val fabric = createFabric(fileName)
+    val singleUseSquares = fabric.squares.filter { it.value.size == 1}.values
+    val multiUseSquares = fabric.squares.filter { it.value.size > 1 }.values
+    val singleUseClaims = singleUseSquares.flatten().distinct().toSet()
+    val multiUseClaims = multiUseSquares.flatten().distinct().toSet()
+    return singleUseClaims.minus(multiUseClaims)
+}
