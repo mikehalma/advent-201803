@@ -1,3 +1,4 @@
+import com.sun.org.apache.xpath.internal.operations.Bool
 import java.io.File
 import java.nio.charset.Charset
 
@@ -58,17 +59,22 @@ fun loadClaims(fileName :String) :List<String> {
 
 fun findIntactClaims(fileName: String): Set<Int> {
     val fabric = createFabric(fileName)
-    val singleUseClaims =
-        fabric.squares
-            .filter { it.value.size == 1}
-            .values
-            .flatten()
-            .toSet()
-    val multiUseClaims =
-        fabric.squares
-            .filter { it.value.size > 1 }
-            .values
-            .flatten()
-            .toSet()
-    return singleUseClaims.minus(multiUseClaims)
+    return getClaims(fabric, ::singleUse).minus(getClaims(fabric, ::multiUse))
 }
+
+fun getClaims(fabric: Fabric, type: (square: Map.Entry<Square, Set<Int>>) -> Boolean): Set<Int> {
+    return fabric.squares
+        .filter {type(it)}
+        .values
+        .flatten()
+        .toSet()
+}
+
+fun singleUse(square: Map.Entry<Square, Set<Int>>): Boolean {
+    return square.value.size == 1
+}
+
+fun multiUse(square: Map.Entry<Square, Set<Int>>): Boolean {
+    return square.value.size > 1
+}
+
